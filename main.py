@@ -1,4 +1,4 @@
-from Classes.Form import Form
+from Classes.MainForm import MainForm
 
 if __name__ == '__main__':
-    Form()
+    MainForm()

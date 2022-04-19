@@ -1,4 +1,10 @@
-import datetime
+from constants import ADMINPASSWORD, MAXEXPERIENCE, MAXLENNAME
+
+
+def check_correct_admin_password(pas):
+    if pas == ADMINPASSWORD:
+        return True
+    return False
 
 
 def no_digit(text):
@@ -9,7 +15,7 @@ def no_digit(text):
 
 
 def fio_checker(text):
-    if len(text) > 1 and len(text) < 20:
+    if len(text) > 1 and len(text) < MAXLENNAME:
         flag1 = True
     else:
         flag1 = False
@@ -17,22 +23,13 @@ def fio_checker(text):
     return text, flag1 and flag2
 
 
-def age_checker(text, stoper):
-    try:
-        date = datetime.datetime.strptime(text, '%d.%m.%Y')
-        now_time = datetime.datetime.now()
-    except ValueError:
-        return False
-    if stoper == 0:
-        flag = date > now_time
-    else:
-        start_year = date.year
-        for year in range(start_year, now_time.year):
-            if (year % 4 == 0) and (year % 100 != 0) or (year % 400 == 0):
-                stoper += 1
-        flag = (now_time - date).days < stoper
-    if (2022 - int(date.year)) > 100 or flag:
-        return False
-    return True
+def experience_checker(text:str):
+    for i in text:
+        if not i.isdigit():
+            return text, False
+    if int(text) < 0 or int(text) > MAXEXPERIENCE:
+        return text, False
+    return int(text), True
+
 
 

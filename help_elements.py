@@ -15,14 +15,13 @@ def create_button(width, height, font, background, font_color, text, command, po
     return btn
 
 
-def create_label(width, height, font, font_color, text, position):
+def create_label(font, font_color, text, position, background):
     label = tk.Label(
         text=text,
-        width=width,
-        height=height,
         font=font,
         foreground=font_color,
-        justify=tk.RIGHT
+        justify=tk.LEFT,
+        background=background
     )
     label.place(x=position[0], y=position[1])
     return label

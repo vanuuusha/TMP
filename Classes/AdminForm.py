@@ -1,6 +1,5 @@
 from help_elements import create_button, create_entry, create_label, create_combo_box
-from constants import DEFAULTKWARGSBUTTON, DEFAULTKWARGSLABEL, DEFAULTKWARGSENTRY, CONSOLETEXT, DOCTOR_PROFESSIONS, \
-    DEFAULTCOMBOBOX, MAXEXPERIENCE, MAXLENNAME, DIAGNISISLIST
+from constants import CONSOLETEXT, DOCTOR_PROFESSIONS, MAXEXPERIENCE, MAXLENNAME, DIAGNISISLIST
 from checker import fio_checker, experience_checker
 from .Doctor import Doctor
 from .Patient import Patient
@@ -10,111 +9,131 @@ class AdminForm:
     def __init__(self, main):
         self.MainForm = main
         self.MainForm.window.title("Поликлиника (администратор)")
-        self.MainForm.create_console(CONSOLETEXT + '\tПереход на панель администратора')
+        self.MainForm.create_console('Переход на панель администратора')
         self.show_main_screen()
 
     def show_main_screen(self):
-        self.MainForm.active_elements['admin_label'] = create_label(width=60, **DEFAULTKWARGSLABEL,
-                                                                    text="Вы находитесь в панели администратора, что делать с поликлиникой?",
-                                                                    position=[100, 100])
-        self.MainForm.active_elements['doctor_help_label'] = create_label(width=60, **DEFAULTKWARGSLABEL,
+        self.MainForm.active_elements['admin_label'] = create_label(font_color = "#0C8EEC", text="Вы находитесь в панели администратора, что делать с поликлиникой?", position=[400, 40], background="#b5effb", font="Sedan 14")
+        self.MainForm.active_elements['doctor_help_label'] = create_label(font_color = "#0C8EEC",
                                                                           text=f"В поликлинике сейчас {str(len(self.MainForm.doctors))} докторов",
-                                                                          position=[100, 600])
-        self.MainForm.active_elements['pationt_help_label'] = create_label(width=60, **DEFAULTKWARGSLABEL,
+                                                                          position=[400, 80], background="#b5effb", font="Sedan 14")
+        self.MainForm.active_elements['pationt_help_label'] = create_label(font_color = "#0C8EEC",
                                                                            text=f"В поликлинике сейчас {str(len(self.MainForm.patients))} пациентов",
-                                                                           position=[100, 700])
-        self.MainForm.active_elements['add_doctor'] = create_button(width=15, **DEFAULTKWARGSBUTTON,
+                                                                           position=[400, 120], background="#b5effb", font="Sedan 14")
+        self.MainForm.active_elements['chose_what_do'] = create_label(font_color="#0C8EEC",
+                                                                           text=f"Выберите действие:",
+                                                                           position=[300, 250], background="#b5effb",
+                                                                           font="Sedan 14")
+        self.MainForm.active_elements['add_doctor'] = create_button(font_color = '#ffffff',
                                                                     text="Добавить доктора",
                                                                     command=self.add_doctor,
-                                                                    position=[400, 200])
-        self.MainForm.active_elements['add_patient'] = create_button(width=15, **DEFAULTKWARGSBUTTON,
+                                                                    position=[275, 300], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
+        self.MainForm.active_elements['add_patient'] = create_button(font_color = '#ffffff',
                                                                      text="Добавить пациента",
                                                                      command=self.add_patient,
-                                                                     position=[400, 300])
-        self.MainForm.active_elements['find_diagnos_label'] = create_label(width=60, **DEFAULTKWARGSLABEL,
+                                                                     position=[275, 400], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
+        self.MainForm.active_elements['find_diagnos_label'] = create_label(font_color = "#0C8EEC",
                                                                            text=f"Поиск по диагнозу",
-                                                                           position=[450, 650])
-        self.MainForm.active_elements['find_diagnos_combo'] = create_combo_box(width=30, **DEFAULTCOMBOBOX,
-                                                                         position=[450, 700],
+                                                                           position=[800, 100], background="#b5effb", font="Sedan 14")
+        self.MainForm.active_elements['find_diagnos_combo'] = create_combo_box(width = 12, font_color = "#000000",
+                                                                         position=[800, 150],
                                                                          values=DIAGNISISLIST, default=None,
-                                                                               callback=self.show_find)
-        self.MainForm.active_elements['show_doctors'] = create_button(width=15, **DEFAULTKWARGSBUTTON,
+                                                                               callback=self.show_find, font = "Sedan 14")
+        self.MainForm.active_elements['show_doctors'] = create_button(font_color = '#ffffff',
                                                                     text="Показать докторов",
                                                                     command=self.show_all_doctors,
-                                                                    position=[200, 200])
-        self.MainForm.active_elements['show_pationts'] = create_button(width=15, **DEFAULTKWARGSBUTTON,
+                                                                    position=[275, 500], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
+        self.MainForm.active_elements['show_pationts'] = create_button(font_color = '#ffffff',
                                                                      text="Показать пациентов",
                                                                      command=self.show_all_patients,
-                                                                     position=[200, 300])
-        self.MainForm.active_elements['go_back'] = create_button(width=15, **DEFAULTKWARGSBUTTON, text="Основной экран",
+                                                                     position=[275, 600], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
+        self.MainForm.active_elements['go_back'] = create_button(font_color = '#ffffff', text="Вернуться на основной экран",
                                                                  command=self.MainForm.return_to_main_screen,
-                                                                 position=[400, 500])
+                                                                 position=[1000, 700], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
 
     def show_find(self, event):
-        text = ""
+        text = f"Люди с {self.MainForm.active_elements.get('find_diagnos_combo').get()}:"
         for patient in self.MainForm.patients:
             if self.MainForm.active_elements['find_diagnos_combo'].get() in patient.diagnos:
                 text += f'\n{patient.get_fio()}'
-        self.MainForm.create_console(CONSOLETEXT+text)
+        if text == f"Люди с {self.MainForm.active_elements.get('find_diagnos_combo').get()}:":
+            text += "\nПо вашему запросу никого не найдено"
+        self.MainForm.create_console(text)
 
     def return_to_admin_screen(self):
-        self.MainForm.create_console(CONSOLETEXT + '\tВозврат в панель администратора')
+        self.MainForm.create_console('Возврат в панель администратора')
         self.MainForm.destroy_all()
         self.show_main_screen()
 
     def add_patient(self):
         self.MainForm.destroy_all()
-        self.MainForm.create_console(CONSOLETEXT + '\tПереход на страницу добавления пациента')
-        self.MainForm.active_elements['patient_name'] = create_label(width=60, **DEFAULTKWARGSLABEL,
-                                                                     text="Имя пациента", position=[100, 100])
-        self.MainForm.active_elements['patient_name_entry'] = create_entry(width=30, **DEFAULTKWARGSENTRY,
-                                                                           position=[100, 200])
-        self.MainForm.active_elements['patient_surname'] = create_label(width=60, **DEFAULTKWARGSLABEL,
-                                                                        text="Фамилия пациента", position=[100, 300])
-        self.MainForm.active_elements['patient_surname_entry'] = create_entry(width=50, **DEFAULTKWARGSENTRY,
-                                                                              position=[100, 400])
-        self.MainForm.active_elements['patient_second_surname'] = create_label(width=30, **DEFAULTKWARGSLABEL,
+        self.MainForm.create_console('Переход на страницу добавления пациента')
+        self.MainForm.active_elements['patient_label'] = create_label(font_color="#0C8EEC",
+                                                                    text="Страница добавления пациента",
+                                                                    position=[400, 40], background="#b5effb",
+                                                                    font="Sedan 14")
+        self.MainForm.active_elements['patient_name'] = create_label(font_color="#0C8EEC",
+                                                                     text="Имя пациента", position=[325, 250], background="#b5effb",
+                                                                        font="Sedan 14")
+        self.MainForm.active_elements['patient_name_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                           position=[250, 300], font_color = "#000000")
+        self.MainForm.active_elements['patient_surname'] = create_label(font_color="#0C8EEC",
+                                                                        text="Фамилия пациента", position=[325, 350], background="#b5effb",
+                                                                        font="Sedan 14")
+        self.MainForm.active_elements['patient_surname_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                              position=[250, 400], font_color = "#000000")
+        self.MainForm.active_elements['patient_second_surname'] = create_label(font_color="#0C8EEC",
                                                                                text="Отчество пациента",
-                                                                               position=[100, 500])
-        self.MainForm.active_elements['patient_second_surname_entry'] = create_entry(width=30, **DEFAULTKWARGSENTRY,
-                                                                                     position=[100, 600])
+                                                                               position=[325, 450], background="#b5effb",
+                                                                            font="Sedan 14")
+        self.MainForm.active_elements['patient_second_surname_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                                     position=[250, 500], font_color = "#000000")
 
-        self.MainForm.active_elements['go_back'] = create_button(width=15, **DEFAULTKWARGSBUTTON, text="Отменить",
+        self.MainForm.active_elements['go_back'] = create_button(font_color = '#ffffff', text="Назад",
                                                                  command=self.return_to_admin_screen,
-                                                                 position=[100, 700])
-        self.MainForm.active_elements['complete'] = create_button(width=15, **DEFAULTKWARGSBUTTON, text="Выполнить",
-                                                                  command=self.add_new_pationt, position=[300, 700])
+                                                                 position = [1000, 700], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
+        self.MainForm.active_elements['complete'] = create_button(font_color = '#ffffff', text="Выполнить",
+                                                                  command=self.add_new_pationt, position=[325, 550], background = '#2998E9', width =12, height = '3', font = "Sedan 12")
 
     def add_doctor(self):
         self.MainForm.destroy_all()
-        self.MainForm.create_console(CONSOLETEXT + '\tПереход на страницу добавления доктора')
-        self.MainForm.active_elements['doctor_name'] = create_label(width=60, **DEFAULTKWARGSLABEL,
-                                                                    text="Имя доктора", position=[100, 100])
-        self.MainForm.active_elements['doctor_name_entry'] = create_entry(width=30, **DEFAULTKWARGSENTRY,
-                                                                          position=[100, 200])
-        self.MainForm.active_elements['doctor_surname'] = create_label(width=60, **DEFAULTKWARGSLABEL,
-                                                                       text="Фамилия доктора", position=[100, 300])
-        self.MainForm.active_elements['doctor_surname_entry'] = create_entry(width=50, **DEFAULTKWARGSENTRY,
-                                                                             position=[100, 400])
-        self.MainForm.active_elements['doctor_second_surname'] = create_label(width=30, **DEFAULTKWARGSLABEL,
-                                                                              text="Отчество доктора",
-                                                                              position=[100, 500])
-        self.MainForm.active_elements['doctor_second_surname_entry'] = create_entry(width=30, **DEFAULTKWARGSENTRY,
-                                                                                    position=[100, 600])
-        self.MainForm.active_elements['doctor_prof'] = create_label(width=30, **DEFAULTKWARGSLABEL,
-                                                                    text="Специализация доктора", position=[450, 500])
-        self.MainForm.active_elements['doctor_prof_entry'] = create_combo_box(width=30, **DEFAULTCOMBOBOX,
-                                                                              position=[450, 600],
-                                                                              values=DOCTOR_PROFESSIONS)
-        self.MainForm.active_elements['doctor_experience'] = create_label(width=30, **DEFAULTKWARGSLABEL,
-                                                                          text="Стаж доктора", position=[750, 500])
-        self.MainForm.active_elements['doctor_experience_entry'] = create_entry(width=30, **DEFAULTKWARGSENTRY,
-                                                                                position=[750, 600])
-        self.MainForm.active_elements['go_back'] = create_button(width=15, **DEFAULTKWARGSBUTTON, text="Отменить",
+        self.MainForm.create_console('Переход на страницу добавления доктора')
+        self.MainForm.active_elements['doctor_label'] = create_label(font_color="#0C8EEC",
+                                                                      text="Страница добавления доктора",
+                                                                      position=[400, 40], background="#b5effb",
+                                                                      font="Sedan 14")
+        self.MainForm.active_elements['doctor_name'] = create_label(font_color="#0C8EEC",
+                                                                    text="Имя доктора", position=[325, 250], background="#b5effb",
+                                                                        font="Sedan 14")
+        self.MainForm.active_elements['doctor_name_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                           position=[250, 300], font_color = "#000000")
+        self.MainForm.active_elements['doctor_surname'] = create_label(font_color="#0C8EEC",
+                                                                       text="Фамилия доктора", position=[325, 350], background="#b5effb",
+                                                                        font="Sedan 14")
+        self.MainForm.active_elements['doctor_surname_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                              position=[250, 400], font_color = "#000000")
+        self.MainForm.active_elements['doctor_second_surname'] = create_label(font_color="#0C8EEC",
+                                                                              text="Отчество доктора", position = [325, 450], background = "#b5effb",
+                                              font = "Sedan 14")
+        self.MainForm.active_elements['doctor_second_surname_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                                     position=[250, 500], font_color = "#000000")
+        self.MainForm.active_elements['doctor_prof'] = create_label(font_color="#0C8EEC",
+                                                                    text="Специализация доктора", position=[325, 550], background="#b5effb",
+                                                                            font="Sedan 14")
+
+        self.MainForm.active_elements['doctor_prof_entry'] = create_combo_box(width = 25, font_color = "#000000",
+                                                                              position=[250, 600],
+                                                                              values=DOCTOR_PROFESSIONS, font = "Sedan 14", default = None)
+        self.MainForm.active_elements['doctor_experience'] = create_label(font_color="#0C8EEC",
+                                                                          text="Стаж доктора", position=[325, 650], background="#b5effb",
+                                                                            font="Sedan 14")
+        self.MainForm.active_elements['doctor_experience_entry'] = create_entry(width=25, font = "Sedan 14",
+                                                                                     position=[250, 700], font_color = "#000000")
+        self.MainForm.active_elements['go_back'] = create_button(font_color = '#ffffff', text="Назад",
                                                                  command=self.return_to_admin_screen,
-                                                                 position=[100, 700])
-        self.MainForm.active_elements['complete'] = create_button(width=15, **DEFAULTKWARGSBUTTON, text="Выполнить",
-                                                                  command=self.add_new_doctor, position=[300, 700])
+                                                                 position = [1000, 700], background = '#2998E9', width = '25', height = '3', font = "Sedan 12")
+        self.MainForm.active_elements['complete'] = create_button(font_color = '#ffffff', text="Выполнить",
+                                                                  command=self.add_new_doctor, position=[300, 750], background = '#2998E9', width =12, height = '3', font = "Sedan 12")
 
     def add_new_doctor(self):
         name, name_flag = fio_checker(self.MainForm.active_elements['doctor_name_entry'].get())
@@ -124,20 +143,21 @@ class AdminForm:
         experience, experience_flag = experience_checker(self.MainForm.active_elements['doctor_experience_entry'].get())
         if not name_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tИмя введено неверно, учтите что длина имени не может превышать {MAXLENNAME} символов")
+                f"Имя введено неверно\n Учтите что длина имени не может превышать {MAXLENNAME} символов")
         if not surname_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tФамилия введена неверно, учтите что длина фамилии не может превышать {MAXLENNAME} символов")
+                f"Фамилия введена неверно\n Учтите что длина фамилии не может превышать {MAXLENNAME} символов")
         if not second_surname_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tОтчество введено неверно, учтите что длина отчества не может превышать {MAXLENNAME} символов")
+                f"Отчество введено неверно\n Учтите что длина отчества не может превышать {MAXLENNAME} символов")
         if not experience_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tСтаж введен неверно, учтите что стаж не может превышать {MAXEXPERIENCE} лет")
+                f"Стаж введен неверно\n Учтите что стаж не может превышать {MAXEXPERIENCE} лет")
         if name_flag and surname_flag and second_surname_flag and experience_flag:
             self.MainForm.doctors.append(
                 Doctor(name=name, surname=surname, second_surname=second_surname, experience=experience,
                        profession=self.MainForm.active_elements['doctor_prof_entry'].get()))
+            self.MainForm.doctors[-1].image_maker()
             self.return_to_admin_screen()
 
     def add_new_pationt(self):
@@ -147,29 +167,44 @@ class AdminForm:
             self.MainForm.active_elements['patient_second_surname_entry'].get())
         if not name_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tИмя введено неверно, учтите что длина имени не может превышать {MAXLENNAME} символов")
+                f"Имя введено неверно\n Учтите что длина имени не может превышать {MAXLENNAME} символов")
         if not surname_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tФамилия введена неверно, учтите что длина фамилии не может превышать {MAXLENNAME} символов")
+                f"Фамилия введена неверно\n Учтите что длина фамилии не может превышать {MAXLENNAME} символов")
         if not second_surname_flag:
             self.MainForm.create_console(
-                CONSOLETEXT + f"\tОтчество введено неверно, учтите что длина отчества не может превышать {MAXLENNAME} символов")
+                f"Отчество введено неверно\n Учтите что длина отчества не может превышать {MAXLENNAME} символов")
         if name_flag and surname_flag and second_surname_flag:
             self.MainForm.patients.append(Patient(name=name, surname=surname, second_surname=second_surname))
             self.return_to_admin_screen()
 
     def show_all_doctors(self):
-        text = CONSOLETEXT
+        self.MainForm.destroy_all()
+        self.MainForm.active_elements['go_back'] = create_button(font_color='#ffffff', text="Назад",
+                                                                 command=self.return_to_admin_screen,
+                                                                 position=[1000, 700], background='#2998E9', width='25',
+                                                                 height='3', font="Sedan 12")
+
+        text = ""
+        count = 1
         for doctor in self.MainForm.doctors:
-            text = ''.join([text, '\n', doctor.show_info()])
-        if text == CONSOLETEXT:
-            text += "\n Докторов пока нет"
-        self.MainForm.create_console(text)
+            text = ''.join([text, f'\n{count}) ', doctor.show_info()])
+            count += 1
+        if text == "":
+            text += "Докторов пока нет"
+        self.MainForm.create_big_console(text)
 
     def show_all_patients(self):
-        text = CONSOLETEXT
+        text = ""
+        self.MainForm.destroy_all()
+        self.MainForm.active_elements['go_back'] = create_button(font_color='#ffffff', text="Назад",
+                                                                 command=self.return_to_admin_screen,
+                                                                 position=[1000, 700], background='#2998E9', width='25',
+                                                                 height='3', font="Sedan 12")
+        count = 1
         for pationt in self.MainForm.patients:
-            text = ''.join([text, '\n', pationt.show_info()])
-        if text == CONSOLETEXT:
+            text = ''.join([text, f'\n{count}) ', pationt.show_info()])
+            count += 1
+        if text == "":
             text += "\n Пациентов пока нет"
-        self.MainForm.create_console(text)
+        self.MainForm.create_big_console(text)

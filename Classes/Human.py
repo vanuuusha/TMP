@@ -12,7 +12,7 @@ class Human:
         self.history.append(new_history)
 
     def show_history(self):
-        return '\n'.join(self.history)
+        return '\n'.join([f'{elem+1}) {self.history[elem]}' for elem in range(len(self.history))])
 
     def get_fio(self, number=None):
         if number is not None:

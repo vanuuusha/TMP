@@ -1,14 +1,4 @@
-DEFAULTFONTCOLOR = "black"
-DEFAULTFONT = "Arial 14"
-DEFAULTBACKGROUNDCOLOR = 'blue'
-DEFAULTHEIGHT = 3
-DEFAULTKWARGSBUTTON = {'font': DEFAULTFONT, 'background': DEFAULTBACKGROUNDCOLOR, 'font_color': DEFAULTFONTCOLOR,
-                       'height': DEFAULTHEIGHT}
-DEFAULTKWARGSLABEL = {'font': DEFAULTFONT, 'font_color': DEFAULTFONTCOLOR, 'height': DEFAULTHEIGHT}
-DEFAULTKWARGSENTRY = {'font': DEFAULTFONT, 'font_color': DEFAULTFONTCOLOR}
-DEFAULTCOMBOBOX = {'font': DEFAULTFONT, 'font_color': DEFAULTFONTCOLOR}
-
-CONSOLETEXT = 'Результат ваших действий: '
+CONSOLETEXT = 'Результат Ваших действий: '
 
 DOCTOR_PROFESSIONS = ["Терапевт", "Окулист", "Ухо горло нос"]
 DIAGNISIS = {

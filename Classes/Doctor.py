@@ -1,6 +1,5 @@
 from .Human import Human
-import os
-from PIL import Image
+
 
 class Doctor(Human):
     def __init__(self, name, surname, second_surname, profession, experience):

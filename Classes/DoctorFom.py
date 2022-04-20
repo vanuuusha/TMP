@@ -1,8 +1,5 @@
 from help_elements import create_button, create_label, create_combo_box
 from constants import DIAGNISIS
-import tkinter as tk
-import os
-from PIL import Image, ImageTk
 
 
 class DoctorForm:
@@ -19,23 +16,23 @@ class DoctorForm:
                                                                      text="Вы находитесь на панели доктора",
                                                                      position=[400, 40], background = "#b5effb",
         font = "Sedan 14")
-        self.MainForm.active_elements['doctor_name_label'] = create_label(font_color = "#0C8EEC",
+        self.MainForm.active_elements['doctor_name_label'] = create_label(font_color = "#000000",
                                                                           text=f"Имя {self.doctor.name}",
                                                                           position=[20, 250], background = "#b5effb",
         font = "Sedan 14")
-        self.MainForm.active_elements['doctor_surname_label'] = create_label(font_color = "#0C8EEC",
+        self.MainForm.active_elements['doctor_surname_label'] = create_label(font_color = "#000000",
                                                                              text=f"Фамилия {self.doctor.surname}",
                                                                              position=[20, 300], background = "#b5effb",
         font = "Sedan 14")
-        self.MainForm.active_elements['doctor_second_surname_label'] = create_label(font_color = "#0C8EEC",
+        self.MainForm.active_elements['doctor_second_surname_label'] = create_label(font_color = "#000000",
                                                                                     text=f"Отчество {self.doctor.second_surname}",
                                                                                     position=[20, 350], background = "#b5effb",
         font = "Sedan 14")
-        self.MainForm.active_elements['doctor_prof_label'] = create_label(font_color = "#0C8EEC",
+        self.MainForm.active_elements['doctor_prof_label'] = create_label(font_color = "#000000",
                                                                           text=f"Профессия {self.doctor.profession}",
                                                                           position=[20, 400], background = "#b5effb",
         font = "Sedan 14")
-        self.MainForm.active_elements['doctor_exp_label'] = create_label(font_color = "#0C8EEC",
+        self.MainForm.active_elements['doctor_exp_label'] = create_label(font_color = "#000000",
                                                                          text=f"Стаж {self.doctor.experience}",
                                                                          position=[20, 450], background = "#b5effb",
         font = "Sedan 14")

@@ -16,5 +16,5 @@ class Human:
 
     def get_fio(self, number=None):
         if number is not None:
-            return ''.join([self.name,' ', self.surname[0], '. ', self.second_surname[0], '. (', str(number), ')'])
+            return ''.join([self.surname,' ', self.name[0], '. ', self.second_surname[0], '. (', str(number), ')'])
         return ''.join([self.name, ' ', self.surname[0], '. ', self.second_surname[0], '.'])

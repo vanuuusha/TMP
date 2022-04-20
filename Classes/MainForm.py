@@ -31,7 +31,7 @@ class MainForm:
         self.window.mainloop()
 
     def create_console(self, text=""):
-        create_label(font_color='#ffffff',
+        create_label(font_color='#000000',
                      text=CONSOLETEXT, position=[560, 250], font="Sedan 14", background="#30d3f9")
 
         label = tk.Label(
@@ -60,7 +60,7 @@ class MainForm:
 
     def show_main_screen(self):
         self.window.title("Поликлиника")
-        self.active_elements['chose_what_do'] = create_label(font_color='#ffffff', text="Выберите действие:", position=[280, 250], background="#30d3f9", font="Sedan 14")
+        self.active_elements['chose_what_do'] = create_label(font_color='#000000', text="Выберите действие:", position=[280, 250], background="#30d3f9", font="Sedan 14")
         self.active_elements['admin_button'] = create_button(font_color='#ffffff', text="Войти как админ", command=self.show_admin_auth, position=[240, 500], background='#2998E9', width='25', height='3', font="Sedan 12")
         self.doctor_auth_active = False
         self.now_doctors = []
@@ -72,7 +72,7 @@ class MainForm:
         self.destroy_all()
         self.create_console('Переход на страницу входа в административную панель')
         self.active_elements['admin_label'] = create_label(font_color="#0C8EEC", text="Вход для\n Администратора", position=[400, 72], background="#b5effb", font="Sedan 16")
-        self.active_elements['admin_password_label'] = create_label(font_color="#ffffff", text="Введите пароль: ", position=[250, 250], background="#57dcf9", font="Sedan 14")
+        self.active_elements['admin_password_label'] = create_label(font_color="#000000", text="Введите пароль: ", position=[250, 250], background="#57dcf9", font="Sedan 14")
         self.active_elements['admin_entry'] = create_entry(width=25, font="Sedan 14", font_color="#000000", position=[200, 290])
         self.active_elements['success'] = create_button(font_color='#ffffff', text="Выполнить", command=self.check_correct_admin_password, position=[200, 350], background='#2998E9', width='13', height='3', font="Sedan 12")
         self.active_elements['go_back'] = create_button(font_color='#ffffff', text="Отменить", command=self.return_to_main_screen, position=[350, 350],  background='#2998E9', width='13', height='3', font="Sedan 12")
@@ -93,7 +93,7 @@ class MainForm:
             self.destroy_all()
             AdminForm(self)
         else:
-            self.create_console(CONSOLETEXT + "\tПароль введён неверно")
+            self.create_console("Пароль введён неверно")
 
     def create_chose_doctor(self, event):
         now_prof = self.active_elements['combo_doctor_auth_prof'].get()

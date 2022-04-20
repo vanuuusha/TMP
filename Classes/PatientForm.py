@@ -11,31 +11,31 @@ class PatientForm:
 
     def show_main_screen(self):
         self.MainForm.destroy_all()
-        self.MainForm.active_elements['doctor_label'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['doctor_label'] = create_label(font_color="#000000",
                                                                      text="Вы находитесь на панели пациента",
                                                                      position=[400, 40], background="#b5effb",
                                                                      font="Sedan 14")
-        self.MainForm.active_elements['patient_name_label'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['patient_name_label'] = create_label(font_color="#000000",
                                                                      text=f"Имя: {self.patient.name}",
                                                                      position=[20, 250], background="#b5effb",
                                                                      font="Sedan 14")
-        self.MainForm.active_elements['patient_surname_label'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['patient_surname_label'] = create_label(font_color="#000000",
                                                                           text=f"Фамилия: {self.patient.surname}",
                                                                           position=[20, 300], background="#b5effb",
                                                                      font="Sedan 14")
-        self.MainForm.active_elements['patient_second_surname_label'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['patient_second_surname_label'] = create_label(font_color="#000000",
                                                                              text=f"Отчество: {self.patient.second_surname}",
                                                                              position=[20, 350], background="#b5effb",
                                                                      font="Sedan 14")
-        self.MainForm.active_elements['patine_in_que'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['patine_in_que'] = create_label(font_color="#000000",
                                                                                      text=f"Очередь: {'Да' if self.patient.in_que else 'Нет'}",
                                                                                      position=[20, 400], background="#b5effb",
                                                                      font="Sedan 14")
-        self.MainForm.active_elements['patine_for_que'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['patine_for_que'] = create_label(font_color="#000000",
                                                                       text=f"Очередь к: {self.patient.que_for}",
                                                                       position=[20, 450], background="#b5effb",
                                                                      font="Sedan 14")
-        self.MainForm.active_elements['patine_diagnos'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['patine_diagnos'] = create_label(font_color="#000000",
                                                                        text=f"Диагноз{'ы' if len(self.patient.diagnos) > 1 else ''}: {', '.join(self.patient.diagnos)}{'-' if len(self.patient.diagnos) == 0 else ''}",
                                                                        position=[20, 500], background="#b5effb",
                                                                      font="Sedan 14")
@@ -92,13 +92,12 @@ class PatientForm:
         need_prof = self.MainForm.active_elements['combo_chose_doctor'].get()
         if need_prof != '':
             if not self.patient.in_que:
-                for doctor in self.MainForm.doctors:
-                    if doctor.profession == need_prof:
-                        self.MainForm.doctor_ques[doctor.profession].append(self.patient)
+                self.MainForm.doctor_ques[need_prof].append(self.patient)
                 self.stay_in_queue()
                 self.patient.in_que = True
                 self.patient.que_for = need_prof
                 self.return_to_main_screen('Вы успешно встали в очередь')
+
             else:
                 self.MainForm.create_console("Вы уже стоите в очереди")
         else:

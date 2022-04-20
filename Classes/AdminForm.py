@@ -20,7 +20,7 @@ class AdminForm:
         self.MainForm.active_elements['pationt_help_label'] = create_label(font_color = "#0C8EEC",
                                                                            text=f"В поликлинике сейчас {str(len(self.MainForm.patients))} пациентов",
                                                                            position=[400, 120], background="#b5effb", font="Sedan 14")
-        self.MainForm.active_elements['chose_what_do'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['chose_what_do'] = create_label(font_color="#000000",
                                                                            text=f"Выберите действие:",
                                                                            position=[300, 250], background="#b5effb",
                                                                            font="Sedan 14")
@@ -72,17 +72,17 @@ class AdminForm:
                                                                     text="Страница добавления пациента",
                                                                     position=[400, 40], background="#b5effb",
                                                                     font="Sedan 14")
-        self.MainForm.active_elements['patient_name'] = create_label(font_color="#0C8EEC",
-                                                                     text="Имя пациента", position=[325, 250], background="#b5effb",
+        self.MainForm.active_elements['patient_name'] = create_label(font_color="#000000",
+                                                                     text="Имя пациента", position=[325, 350], background="#b5effb",
                                                                         font="Sedan 14")
         self.MainForm.active_elements['patient_name_entry'] = create_entry(width=25, font = "Sedan 14",
-                                                                           position=[250, 300], font_color = "#000000")
-        self.MainForm.active_elements['patient_surname'] = create_label(font_color="#0C8EEC",
-                                                                        text="Фамилия пациента", position=[325, 350], background="#b5effb",
+                                                                           position=[250, 400], font_color = "#000000")
+        self.MainForm.active_elements['patient_surname'] = create_label(font_color="#000000",
+                                                                        text="Фамилия пациента", position=[325, 250], background="#b5effb",
                                                                         font="Sedan 14")
         self.MainForm.active_elements['patient_surname_entry'] = create_entry(width=25, font = "Sedan 14",
-                                                                              position=[250, 400], font_color = "#000000")
-        self.MainForm.active_elements['patient_second_surname'] = create_label(font_color="#0C8EEC",
+                                                                              position=[250, 300], font_color = "#000000")
+        self.MainForm.active_elements['patient_second_surname'] = create_label(font_color="#000000",
                                                                                text="Отчество пациента",
                                                                                position=[325, 450], background="#b5effb",
                                                                             font="Sedan 14")
@@ -102,29 +102,29 @@ class AdminForm:
                                                                       text="Страница добавления доктора",
                                                                       position=[400, 40], background="#b5effb",
                                                                       font="Sedan 14")
-        self.MainForm.active_elements['doctor_name'] = create_label(font_color="#0C8EEC",
-                                                                    text="Имя доктора", position=[325, 250], background="#b5effb",
+        self.MainForm.active_elements['doctor_name'] = create_label(font_color="#000000",
+                                                                    text="Имя доктора", position=[325, 350], background="#b5effb",
                                                                         font="Sedan 14")
         self.MainForm.active_elements['doctor_name_entry'] = create_entry(width=25, font = "Sedan 14",
-                                                                           position=[250, 300], font_color = "#000000")
-        self.MainForm.active_elements['doctor_surname'] = create_label(font_color="#0C8EEC",
-                                                                       text="Фамилия доктора", position=[325, 350], background="#b5effb",
+                                                                           position=[250, 400], font_color = "#000000")
+        self.MainForm.active_elements['doctor_surname'] = create_label(font_color="#000000",
+                                                                       text="Фамилия доктора", position=[325, 250], background="#b5effb",
                                                                         font="Sedan 14")
         self.MainForm.active_elements['doctor_surname_entry'] = create_entry(width=25, font = "Sedan 14",
-                                                                              position=[250, 400], font_color = "#000000")
-        self.MainForm.active_elements['doctor_second_surname'] = create_label(font_color="#0C8EEC",
+                                                                              position=[250, 300], font_color = "#000000")
+        self.MainForm.active_elements['doctor_second_surname'] = create_label(font_color="#000000",
                                                                               text="Отчество доктора", position = [325, 450], background = "#b5effb",
                                               font = "Sedan 14")
         self.MainForm.active_elements['doctor_second_surname_entry'] = create_entry(width=25, font = "Sedan 14",
                                                                                      position=[250, 500], font_color = "#000000")
-        self.MainForm.active_elements['doctor_prof'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['doctor_prof'] = create_label(font_color="#000000",
                                                                     text="Специализация доктора", position=[325, 550], background="#b5effb",
                                                                             font="Sedan 14")
 
         self.MainForm.active_elements['doctor_prof_entry'] = create_combo_box(width = 25, font_color = "#000000",
                                                                               position=[250, 600],
                                                                               values=DOCTOR_PROFESSIONS, font = "Sedan 14", default = None)
-        self.MainForm.active_elements['doctor_experience'] = create_label(font_color="#0C8EEC",
+        self.MainForm.active_elements['doctor_experience'] = create_label(font_color="#000000",
                                                                           text="Стаж доктора", position=[325, 650], background="#b5effb",
                                                                             font="Sedan 14")
         self.MainForm.active_elements['doctor_experience_entry'] = create_entry(width=25, font = "Sedan 14",
@@ -157,7 +157,6 @@ class AdminForm:
             self.MainForm.doctors.append(
                 Doctor(name=name, surname=surname, second_surname=second_surname, experience=experience,
                        profession=self.MainForm.active_elements['doctor_prof_entry'].get()))
-            self.MainForm.doctors[-1].image_maker()
             self.return_to_admin_screen()
 
     def add_new_pationt(self):

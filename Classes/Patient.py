@@ -9,7 +9,7 @@ class Patient(Human):
         self.diagnos = []
         self.history = []
 
-
-
     def show_info(self):
-        return ''.join([self.surname, ' ', self.name[0], '. ', self.second_surname[0]])
+        if self.diagnos == []:
+            return ''.join([self.surname, ' ', self.name[0], '. ', self.second_surname[0], '.'])
+        return ''.join([self.surname, ' ', self.name[0], '. ', self.second_surname[0], f'. Диагноз{"ы" if len(self.diagnos) > 1 else ""}: ', ', '.join(self.diagnos)])

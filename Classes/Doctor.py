@@ -8,6 +8,6 @@ class Doctor(Human):
         self.experience = experience
 
     def show_info(self):
-        return ''.join([self.surname, ' ', self.name[0], '. ', self.second_surname[0], '. Специальность: ', self.profession, ', Стаж: ', str(self.experience), f' {"лет" if self.experience >= 5 else "года"}'])
+        return ''.join([self.surname, ' ', self.name, ' ', self.second_surname, '. Специальность: ', self.profession, ', Стаж: ', str(self.experience), f' {"лет" if self.experience >= 5 else "года"}'])
 
 

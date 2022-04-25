@@ -14,7 +14,10 @@ class Human:
     def show_history(self):
         return '\n'.join([f'{elem+1}) {self.history[elem]}' for elem in range(len(self.history))])
 
+    def get_full_fio(self):
+        return ''.join([self.surname, ' ', self.name, ' ', self.second_surname])
+
     def get_fio(self, number=None):
         if number is not None:
             return ''.join([self.surname,' ', self.name[0], '. ', self.second_surname[0], '. (', str(number), ')'])
-        return ''.join([self.name, ' ', self.surname[0], '. ', self.second_surname[0], '.'])
+        return ''.join([self.surname, ' ', self.name[0], '. ', self.second_surname[0], '.'])

@@ -14,3 +14,4 @@ for dig in DIAGNISIS.values():
 ADMINPASSWORD = '1'
 MAXLENNAME = 20
 MAXEXPERIENCE = 70
+EXPLIST = [f'{i-10}-{i}' for i in range(10, MAXEXPERIENCE+10, 10)]

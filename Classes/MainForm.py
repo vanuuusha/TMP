@@ -32,7 +32,7 @@ class MainForm:
 
     def create_console(self, text=""):
         create_label(font_color='#000000',
-                     text=CONSOLETEXT, position=[560, 250], font="Sedan 14", background="#30d3f9")
+                     text=CONSOLETEXT, position=[560, 175], font="Sedan 14", background="#30d3f9")
 
         label = tk.Label(
             text=text,
@@ -40,9 +40,9 @@ class MainForm:
             foreground='#000000',
             background='#ffffff',
             width=50,
-            height=12,
+            height=16,
         )
-        label.place(x=560, y=300)
+        label.place(x=560, y=225)
 
     def create_big_console(self, text=""):
         self.active_elements['big_console_label'] = create_label(font_color='#ffffff',
@@ -60,22 +60,22 @@ class MainForm:
 
     def show_main_screen(self):
         self.window.title("Поликлиника")
-        self.active_elements['chose_what_do'] = create_label(font_color='#000000', text="Выберите действие:", position=[280, 250], background="#30d3f9", font="Sedan 14")
-        self.active_elements['admin_button'] = create_button(font_color='#ffffff', text="Войти как админ", command=self.show_admin_auth, position=[240, 500], background='#2998E9', width='25', height='3', font="Sedan 12")
+        self.active_elements['chose_what_do'] = create_label(font_color='#000000', text="Выберите действие:", position=[280, 175], background="#30d3f9", font="Sedan 14")
+        self.active_elements['admin_button'] = create_button(font_color='#ffffff', text="Войти как админ", command=self.show_admin_auth, position=[240, 425], background='#2998E9', width='25', height='3', font="Sedan 12")
         self.doctor_auth_active = False
         self.now_doctors = []
-        self.active_elements['doctor_button'] = create_button(font_color='#ffffff', text="Войти как доктор", command=self.show_doctor_auth, position=[240, 400], background='#2998E9', width='25', height='3', font="Sedan 12")
+        self.active_elements['doctor_button'] = create_button(font_color='#ffffff', text="Войти как доктор", command=self.show_doctor_auth, position=[240, 325], background='#2998E9', width='25', height='3', font="Sedan 12")
         self.patient_auth_active = False
-        self.active_elements['patient_button'] = create_button(font_color='#ffffff', text="Войти как пациент", command=self.show_patient_auth, position=[240, 300], background='#2998E9', width='25', height='3', font="Sedan 12")
+        self.active_elements['patient_button'] = create_button(font_color='#ffffff', text="Войти как пациент", command=self.show_patient_auth, position=[240, 225], background='#2998E9', width='25', height='3', font="Sedan 12")
 
     def show_admin_auth(self):
         self.destroy_all()
         self.create_console('Переход на страницу входа в административную панель')
         self.active_elements['admin_label'] = create_label(font_color="#0C8EEC", text="Вход для\n Администратора", position=[400, 72], background="#b5effb", font="Sedan 16")
-        self.active_elements['admin_password_label'] = create_label(font_color="#000000", text="Введите пароль: ", position=[250, 250], background="#57dcf9", font="Sedan 14")
-        self.active_elements['admin_entry'] = create_entry(width=25, font="Sedan 14", font_color="#000000", position=[200, 290])
-        self.active_elements['success'] = create_button(font_color='#ffffff', text="Выполнить", command=self.check_correct_admin_password, position=[200, 350], background='#2998E9', width='13', height='3', font="Sedan 12")
-        self.active_elements['go_back'] = create_button(font_color='#ffffff', text="Отменить", command=self.return_to_main_screen, position=[350, 350],  background='#2998E9', width='13', height='3', font="Sedan 12")
+        self.active_elements['admin_password_label'] = create_label(font_color="#000000", text="Введите пароль: ", position=[250, 175], background="#57dcf9", font="Sedan 14")
+        self.active_elements['admin_entry'] = create_entry(width=25, font="Sedan 14", font_color="#000000", position=[200, 225])
+        self.active_elements['success'] = create_button(font_color='#ffffff', text="Выполнить", command=self.check_correct_admin_password, position=[200, 280], background='#2998E9', width='13', height='3', font="Sedan 12")
+        self.active_elements['go_back'] = create_button(font_color='#ffffff', text="Отменить", command=self.return_to_main_screen, position=[350, 280],  background='#2998E9', width='13', height='3', font="Sedan 12")
 
     def destroy_all(self):
         for elem in self.active_elements:
@@ -103,17 +103,17 @@ class MainForm:
                 self.now_doctors.append(doctor)
         values = [self.now_doctors[doctor].get_fio(doctor+1) for doctor in range(len(self.now_doctors))]
         self.active_elements['combo_doctor_auth_who'].destroy()
-        self.active_elements['combo_doctor_auth_who'] = create_combo_box(width=12, font_color="#000000", position=[875, 150], values=values, default=None, font="Sedan 14")
+        self.active_elements['combo_doctor_auth_who'] = create_combo_box(width=12, font_color="#000000", position=[875, 140], values=values, default=None, font="Sedan 14")
 
     def show_doctor_auth(self):
         if not self.doctor_auth_active:
             self.create_console('Создана форма добавления доктора')
-            self.active_elements['doctor_label'] = create_label(font_color="#0C8EEC", text="Вход для доктора", position=[20, 150], background="#b5effb", font="Sedan 14")
-            self.active_elements['doctor_auth_label'] = create_label(font_color="#0C8EEC", text="Выберите профессию доктора:", position=[200, 150], background="#b5effb", font="Sedan 14")
-            self.active_elements['combo_doctor_auth_prof'] = create_combo_box(width=12, font_color="#000000", position=[500, 150], values=DOCTOR_PROFESSIONS, default=None, callback=self.create_chose_doctor, font="Sedan 14")
-            self.active_elements['doctor_auth_label_2'] = create_label(font_color="#0C8EEC", text="Выберите доктора", position=[675, 150], background="#b5effb", font="Sedan 14")
-            self.active_elements['combo_doctor_auth_who'] = create_combo_box(width=12, font_color="#000000", position=[875, 150], values=[doctor.get_fio() for doctor in self.now_doctors], default=None, font="Sedan 14")
-            self.active_elements['doctor_success'] = create_button(font_color='#ffffff', text="Выполнить", command=self.enter_doctor_menu, position=[1050, 150],  background='#2998E9', width='13', height='1', font="Sedan 12")
+            self.active_elements['doctor_label'] = create_label(font_color="#0C8EEC", text="Вход для доктора", position=[20, 140], background="#b5effb", font="Sedan 14")
+            self.active_elements['doctor_auth_label'] = create_label(font_color="#0C8EEC", text="Выберите профессию доктора:", position=[200, 140], background="#b5effb", font="Sedan 14")
+            self.active_elements['combo_doctor_auth_prof'] = create_combo_box(width=12, font_color="#000000", position=[500, 140], values=DOCTOR_PROFESSIONS, default=None, callback=self.create_chose_doctor, font="Sedan 14")
+            self.active_elements['doctor_auth_label_2'] = create_label(font_color="#0C8EEC", text="Выберите доктора", position=[675, 140], background="#b5effb", font="Sedan 14")
+            self.active_elements['combo_doctor_auth_who'] = create_combo_box(width=12, font_color="#000000", position=[875, 140], values=[doctor.get_fio() for doctor in self.now_doctors], default=None, font="Sedan 14")
+            self.active_elements['doctor_success'] = create_button(font_color='#ffffff', text="Выполнить", command=self.enter_doctor_menu, position=[1050, 140],  background='#2998E9', width='13', height='1', font="Sedan 12")
 
             self.doctor_auth_active = True
         else:
@@ -145,10 +145,10 @@ class MainForm:
     def show_patient_auth(self):
         if not self.patient_auth_active:
             self.create_console('Создана форма добавления пациента')
-            self.active_elements['patient_label'] = create_label(font_color="#0C8EEC", text="Вход для пациента", position=[400, 40], background="#b5effb", font="Sedan 14")
-            self.active_elements['patient_auth_label'] = create_label(font_color="#0C8EEC", text="Выберите пациента", position=[600, 40], background="#b5effb", font="Sedan 14")
-            self.active_elements['combo_patient_auth'] = create_combo_box(width = 12, font_color = "#000000", position=[800, 40], values=[self.patients[patient].get_fio(patient+1) for patient in range(len(self.patients))], default=None, font = "Sedan 14")
-            self.active_elements['patient_success'] = create_button(font_color = '#ffffff', text="Выполнить", command=self.enter_patient_menu, position=[1000, 40], background = '#2998E9', width = '13', height = '1', font = "Sedan 12")
+            self.active_elements['patient_label'] = create_label(font_color="#0C8EEC", text="Вход для пациента", position=[400, 70], background="#b5effb", font="Sedan 14")
+            self.active_elements['patient_auth_label'] = create_label(font_color="#0C8EEC", text="Выберите пациента", position=[600, 70], background="#b5effb", font="Sedan 14")
+            self.active_elements['combo_patient_auth'] = create_combo_box(width = 12, font_color = "#000000", position=[800, 70], values=[self.patients[patient].get_fio(patient+1) for patient in range(len(self.patients))], default=None, font = "Sedan 14")
+            self.active_elements['patient_success'] = create_button(font_color = '#ffffff', text="Выполнить", command=self.enter_patient_menu, position=[1000, 70], background = '#2998E9', width = '13', height = '1', font = "Sedan 12")
             self.patient_auth_active = True
         else:
             self.create_console('Форма добавления пациента удалена')

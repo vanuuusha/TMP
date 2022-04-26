@@ -229,17 +229,27 @@ class AdminForm:
         experience, experience_flag = experience_checker(self.MainForm.active_elements['doctor_experience_entry'].get())
         if not name_flag:
             self.MainForm.create_console(
-                f"Имя введено неверно\n Учтите что длина имени не может превышать {MAXLENNAME} символов")
+                f"Имя введено неверно\n Учтите что длина имени не может превышать {MAXLENNAME} символов\nФамилия не должна содержать цифры")
         if not surname_flag:
             self.MainForm.create_console(
-                f"Фамилия введена неверно\n Учтите что длина фамилии не может превышать {MAXLENNAME} символов")
+                f"Фамилия введена неверно\n Учтите что длина фамилии не может превышать {MAXLENNAME} символов\nФамилия не должна содержать цифры")
         if not second_surname_flag:
             self.MainForm.create_console(
-                f"Отчество введено неверно\n Учтите что длина отчества не может превышать {MAXLENNAME} символов")
+                f"Отчество введено неверно\n Учтите что длина отчества не может превышать {MAXLENNAME} символов\nФамилия не должна содержать цифры")
         if not experience_flag:
             self.MainForm.create_console(
                 f"Стаж введен неверно\n Учтите что стаж не может превышать {MAXEXPERIENCE} лет")
+        exsist_flag = True
         if name_flag and surname_flag and second_surname_flag and experience_flag:
+            for doctor in self.MainForm.doctors:
+                print(doctor.name, name)
+                if doctor.name == name.lower().title() and doctor.surname == surname.lower().title() and doctor.second_surname == second_surname.lower().title() and doctor.experience == experience:
+                    exsist_flag = False
+                    break
+        if not exsist_flag:
+            self.MainForm.create_console(
+                f"Такой доктор уже существует")
+        if name_flag and surname_flag and second_surname_flag and experience_flag and exsist_flag:
             self.MainForm.doctors.append(
                 Doctor(name=name, surname=surname, second_surname=second_surname, experience=experience,
                        profession=self.MainForm.active_elements['doctor_prof_entry'].get()))
@@ -270,7 +280,17 @@ class AdminForm:
         if not bithday_flag:
             self.MainForm.create_console(
                 f"Дата рождения введена неверно\n Формат: DD.MM.YYYY")
+        exsist_flag = True
         if name_flag and surname_flag and second_surname_flag and bithday_flag:
+            for patient in self.MainForm.patients:
+                if patient.name == name.lower().title() and patient.surname == surname.lower().title() and patient.second_surname == second_surname.lower().title() and patient.birhaday_date == birhaday_date:
+                    exsist_flag = False
+                    break
+
+        if not exsist_flag:
+            self.MainForm.create_console(
+                f"Такой пациент уже существует")
+        if name_flag and surname_flag and second_surname_flag and bithday_flag and exsist_flag:
             self.MainForm.patients.append(
                 Patient(name=name, surname=surname, second_surname=second_surname, birhaday_date=birhaday_date))
             self.return_to_admin_screen()

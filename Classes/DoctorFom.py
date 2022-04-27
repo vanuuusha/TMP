@@ -59,6 +59,15 @@ class DoctorForm:
 
     def create_diagnosis_combo(self, event):
         self.MainForm.create_console('Добавлена форма выставления диагноза')
+        patients_fio = [self.MainForm.doctor_ques[self.doctor.profession][patient].get_fio(patient + 1) for patient in
+                        range(len(self.MainForm.doctor_ques[self.doctor.profession]))]
+        now_pationt_fio = self.MainForm.active_elements['combo_chose_doctor'].get()
+        need_index = patients_fio.index(now_pationt_fio)
+        patient = self.MainForm.doctor_ques[self.doctor.profession][need_index]
+        self.MainForm.active_elements['label_what_wrong'] = create_label(font_color = "#000000",
+                                                                         text=f"Жалоба: {patient.what_wrong}",
+                                                                         position=[240, 650], background = "#b5effb",
+                                                                        font = "Sedan 14")
         self.MainForm.active_elements['combo_diagons'] = create_combo_box(width = 12, font_color = "#000000",
                                                                           position=[475, 725],
                                                                           values=DIAGNISIS[self.doctor.profession],
@@ -113,6 +122,9 @@ class DoctorForm:
             if self.MainForm.active_elements.get('submit') is not None:
                 self.MainForm.active_elements['submit'].destroy()
                 del self.MainForm.active_elements['submit']
+            if self.MainForm.active_elements.get('label_what_wrong') is not None:
+                self.MainForm.active_elements['label_what_wrong'].destroy()
+                del self.MainForm.active_elements['label_what_wrong']
             self.show_que_flag = False
 
     def show_history(self):

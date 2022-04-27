@@ -1,4 +1,4 @@
-from help_elements import create_button, create_label, create_combo_box
+from help_elements import create_button, create_label, create_combo_box, create_entry
 from constants import DOCTOR_PROFESSIONS
 
 
@@ -81,34 +81,55 @@ class PatientForm:
     def stay_in_queue(self):
         if not self.queue_flag:
             self.MainForm.create_console('Добавлена форма становления в очередь')
+            self.MainForm.active_elements['type_doctor'] = create_label(font_color="#000000",
+                                                                             text=f"Выберите тип врача",
+                                                                             position=[300, 685], background="#b5effb",
+                                                                             font="Sedan 14")
             self.MainForm.active_elements['combo_chose_doctor'] = create_combo_box(width=12, font_color="#000000",
                                                                                    position=[300, 725],
                                                                                    values=DOCTOR_PROFESSIONS,
                                                                                    default=None, font="Sedan 14")
+            self.MainForm.active_elements['enter_your_bads'] = create_label(font_color="#000000",
+                                                                             text=f"Введите жалобу:",
+                                                                             position=[520, 685], background="#b5effb",
+                                                                             font="Sedan 14")
+            self.MainForm.active_elements['enter_your_bads_entry'] = create_entry(width=25, font="Sedan 14", font_color="#000000", position=[500, 725])
+
             self.MainForm.active_elements['go_to'] = create_button(font_color='#ffffff',
                                                                    text="Встать",
                                                                    command=self.go_to_queue,
-                                                                   position=[500, 700], background='#2998E9',
-                                                                   width='25', height='3', font="Sedan 12")
+                                                                   position=[800, 700], background='#2998E9',
+                                                                   width='12', height='3', font="Sedan 12")
             self.queue_flag = True
         else:
             self.MainForm.create_console('Форма становления в очередь удалена')
             self.MainForm.active_elements['combo_chose_doctor'].destroy()
             self.MainForm.active_elements['go_to'].destroy()
+            self.MainForm.active_elements['type_doctor'].destroy()
+            self.MainForm.active_elements['enter_your_bads'].destroy()
+            self.MainForm.active_elements['enter_your_bads_entry'].destroy()
             self.MainForm.active_elements.pop('combo_chose_doctor')
             self.MainForm.active_elements.pop('go_to')
+            self.MainForm.active_elements.pop('type_doctor')
+            self.MainForm.active_elements.pop('enter_your_bads')
+            self.MainForm.active_elements.pop('enter_your_bads_entry')
             self.queue_flag = False
 
     def go_to_queue(self):
         need_prof = self.MainForm.active_elements['combo_chose_doctor'].get()
+        what_wrong = self.MainForm.active_elements['enter_your_bads_entry'].get()
+        print(len(what_wrong))
         if need_prof != '':
             if not self.patient.in_que:
-                self.MainForm.doctor_ques[need_prof].append(self.patient)
-                self.stay_in_queue()
-                self.patient.in_que = True
-                self.patient.que_for = need_prof
-                self.return_to_main_screen('Вы успешно встали в очередь')
-
+                if what_wrong != '' and len(what_wrong) < 50:
+                    self.MainForm.doctor_ques[need_prof].append(self.patient)
+                    self.stay_in_queue()
+                    self.patient.in_que = True
+                    self.patient.que_for = need_prof
+                    self.return_to_main_screen('Вы успешно встали в очередь')
+                    self.patient.what_wrong = what_wrong
+                else:
+                    self.MainForm.create_console("Вы неверно указали что с вами случилось\n (не более 50 символов)")
             else:
                 self.MainForm.create_console("Вы уже стоите в очереди")
         else:

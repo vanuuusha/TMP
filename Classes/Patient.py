@@ -9,6 +9,7 @@ class Patient(Human):
         self.birhaday_date = birhaday_date
         self.diagnos = []
         self.history = []
+        self.what_wrong = ''
 
     def show_info(self):
         if self.diagnos == []:

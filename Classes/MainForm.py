@@ -180,9 +180,10 @@ class MainForm:
             self.create_console('Записи из файла успешно добавлены')
             self.doctors.extend(doctors_info)
             self.patients.extend(patient_info)
+            self.show_file(flag=True)
 
 
-    def show_file(self):
+    def show_file(self, flag=False):
         if not self.file_flag:
             self.create_console('Создана форма работы с файлом')
             self.active_elements['copy_file_btn'] = create_button(font_color='#ffffff', text="Скопировать из файла",
@@ -191,7 +192,8 @@ class MainForm:
                                                                 font="Sedan 12")
             self.file_flag = True
         else:
-            self.create_console('Форма работы с файлом удалена')
+            if not flag:
+                self.create_console('Форма работы с файлом удалена')
             self.active_elements['copy_file_btn'].destroy()
             self.active_elements.pop('copy_file_btn')
             self.file_flag = False

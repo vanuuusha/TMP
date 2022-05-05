@@ -66,7 +66,7 @@ class DoctorForm:
         patient = self.MainForm.doctor_ques[self.doctor.profession][need_index]
         self.MainForm.active_elements['label_what_wrong'] = create_label(font_color = "#000000",
                                                                          text=f"Жалоба: {patient.what_wrong}",
-                                                                         position=[240, 650], background = "#b5effb",
+                                                                         position=[265, 670], background = "#b5effb",
                                                                         font = "Sedan 14")
         self.MainForm.active_elements['combo_diagons'] = create_combo_box(width = 12, font_color = "#000000",
                                                                           position=[475, 725],

@@ -4,6 +4,7 @@ from checker import fio_checker, experience_checker
 from .Doctor import Doctor
 from .Patient import Patient
 import datetime
+import tkinter as tk
 
 
 class AdminForm:
@@ -41,28 +42,43 @@ class AdminForm:
                                                                      command=self.add_patient,
                                                                      position=[275, 325], background='#2998E9',
                                                                      width='25', height='3', font="Sedan 12")
+        self.MainForm.active_elements['find_surname_label'] = create_label(font_color="#000000",
+                                                                           text=f"Поиск по ФИО",
+                                                                           position=[950, 140], background="#b5effb",
+                                                                           font="Sedan 14")
+        sv = tk.StringVar()
+        sv.trace("w", lambda name, index, mode, sv=sv: self.find_by_surname(sv))
+        self.MainForm.active_elements['find_surname_entry'] = tk.Entry(
+            width=25,
+            font="Sedan 14",
+            foreground="#000000",
+            textvariable=sv
+        )
+
+        self.MainForm.active_elements['find_surname_entry'].place(x=900, y=180)
+
         self.MainForm.active_elements['find_diagnos_label'] = create_label(font_color="#000000",
                                                                            text=f"Поиск по диагнозу",
-                                                                           position=[560, 600], background="#b5effb",
+                                                                           position=[560, 640], background="#b5effb",
                                                                            font="Sedan 14")
         self.MainForm.active_elements['find_diagnos_combo'] = create_combo_box(width=12, font_color="#000000",
-                                                                               position=[560, 650],
+                                                                               position=[560, 690],
                                                                                values=DIAGNISISLIST, default=None,
                                                                                callback=self.show_find, font="Sedan 14")
         self.MainForm.active_elements['find_que'] = create_label(font_color="#000000",
                                                                            text=f"Поиск по очереди",
-                                                                           position=[760, 600], background="#b5effb",
+                                                                           position=[760, 640], background="#b5effb",
                                                                            font="Sedan 14")
         self.MainForm.active_elements['find_que_combo'] = create_combo_box(width=12, font_color="#000000",
-                                                                               position=[760, 650],
+                                                                               position=[760, 690],
                                                                                values=DOCTOR_PROFESSIONS, default=None,
                                                                                callback=self.show_find_zapis, font="Sedan 14")
         self.MainForm.active_elements['find_exp'] = create_label(font_color="#000000",
                                                                  text=f"Поиск по стажу",
-                                                                 position=[960, 600], background="#b5effb",
+                                                                 position=[960, 640], background="#b5effb",
                                                                  font="Sedan 14")
         self.MainForm.active_elements['find_exp_combo'] = create_combo_box(width=12, font_color="#000000",
-                                                                           position=[960, 650],
+                                                                           position=[960, 690],
                                                                            values=EXPLIST, default=None,
                                                                            callback=self.show_find_exp,
                                                                            font="Sedan 14")
@@ -79,8 +95,28 @@ class AdminForm:
         self.MainForm.active_elements['go_back'] = create_button(font_color='#ffffff',
                                                                  text="Вернуться на основной экран",
                                                                  command=self.MainForm.return_to_main_screen,
-                                                                 position=[1000, 700], background='#2998E9', width='25',
+                                                                 position=[1150, 700], background='#2998E9', width='25',
                                                                  height='3', font="Sedan 12")
+
+    def find_by_surname(self, text):
+        text = text.get()
+        result = 'Поиск по вашему запросу:\n'
+        index = 1
+        if text != "":
+            for doctor in self.MainForm.doctors:
+                if text in doctor.get_full_fio():
+                    result += str(index) + ") " + doctor.show_info()+ "\n"
+                    index += 1
+            for patient in self.MainForm.patients:
+                if text in patient.get_full_fio():
+                    result += str(index) + ") " + patient.show_info() + "\n"
+                    index += 1
+            if result == 'Поиск по вашему запросу:\n':
+                result += "Ничего не найдено"
+            self.MainForm.create_console(result)
+        else:
+            self.MainForm.create_console("")
+
     def show_find_exp(self, event):
         exp_radius = self.MainForm.active_elements.get('find_exp_combo').get()
         text = f"Врачи со стажем {exp_radius}:"

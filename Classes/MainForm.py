@@ -33,21 +33,26 @@ class MainForm:
 
         self.show_main_screen()
         self.create_console()
+
         self.window.mainloop()
 
     def create_console(self, text=""):
+        try:
+            self.console.destroy()
+        except AttributeError:
+            pass
         create_label(font_color='#000000',
                      text=CONSOLETEXT, position=[550, 175], font="Sedan 14", background="#30d3f9")
 
-        label = tk.Label(
+        self.console = tk.Label(
             text=text,
-            font="Sedan 14",
+            font=f"Sedan 14",
             foreground='#000000',
             background='#ffffff',
-            width=50,
-            height=16,
+            width=70,
+            height=18,
         )
-        label.place(x=560, y=225)
+        self.console.place(x=560, y=225)
 
     def create_big_console(self, text=""):
         self.active_elements['big_console'] = tk.Label(
@@ -55,7 +60,7 @@ class MainForm:
             font="Sedan 14",
             foreground='#000000',
             background='#ffffff',
-            width=100,
+            width=110,
             height=22,
         )
         self.active_elements['big_console'].place(x=150, y=200)
@@ -92,16 +97,50 @@ class MainForm:
                                                               background='#2998E9', width='20', height='3',
                                                               font="Sedan 12")
 
+    def len_no_nan(self, *args):
+        lengths = [0 for _ in range(len(args))]
+        for elem_num, elem in enumerate(args):
+            for i in elem:
+                text = str(i)
+                if text != 'nan' and text != "NaT":
+                    lengths[elem_num] += 1
+        first = lengths[0]
+        for i in range(len(lengths)):
+            if first != lengths[i]:
+                return False
+        return True
+
+    def copy_to_file(self):
+        help_patient = self.patients[:]
+        help_doctors = self.doctors[:]
+        while len(help_doctors) > len(help_patient):
+            help_patient.append(Patient(name='nan', surname='nan', second_surname='nan', birhaday_date='nan'))
+        while len(help_patient) > len(help_doctors):
+            help_doctors.append(Doctor(name='nan', surname='nan', second_surname='nan', profession='nan', experience='nan'))
+        df = pd.DataFrame({'Фамилия доктора': [doctor.surname for doctor in help_doctors],
+                           'Имя доктора': [doctor.name for doctor in help_doctors],
+                           'Отчество доктора': [doctor.second_surname for doctor in help_doctors],
+                           'Специализация доктора': [doctor.profession for doctor in help_doctors],
+                           'Стаж доктора': [doctor.experience for doctor in help_doctors],
+                           'Фамилия пациента': [patient.surname for patient in help_patient],
+                           'Имя пациента': [patient.name for patient in help_patient],
+                           'Отчество пациента': [patient.second_surname for patient in help_patient],
+                           'Дата рождения пациента': [patient.birhaday_date for patient in help_patient],
+                           })
+        df.to_excel('./data.xlsx')
+        self.create_console('Записи в файл успешно добавлены')
+        self.show_file(flag=True)
+
 
     def copy_from_file(self):
-        excel_data = pd.read_excel("data.xlsx")
-        data = pd.DataFrame(excel_data, columns=['Фамилия доктора', 'Имя доктора', 'Отчество доктора', 'Специализация доктора', 'Стаж доктора', 'Фамилия пациента', 'Имя пациента', 'Отчество пациента', 'Дата рождения пациента'])
+        excel_data = pd.read_excel("./data.xlsx")
+        data = pd.DataFrame(excel_data, columns=['Фамилия доктора', 'Имя доктора', 'Отчество доктора', 'Специализация доктора', 'Стаж доктора'])
         doctor_correct_flag = False
         patient_correct_flag = False
         doctors_info, patient_info = [], []
-        if len(data['Фамилия доктора']) == len(data['Имя доктора']) == len(data['Отчество доктора']) == len(data['Специализация доктора']) == len(data['Стаж доктора']):
+        if self.len_no_nan(data['Фамилия доктора'], data['Имя доктора'], data['Отчество доктора'], data['Специализация доктора']):
             for index in range(len(data['Фамилия доктора'])):
-                if str(data['Фамилия доктора'][index]) != 'nan':
+                if str(data['Фамилия доктора'][index]) != 'nan' and str(data['Фамилия доктора'][index]) != 'Nan':
                     surname, surname_flag = fio_checker(data['Фамилия доктора'][index])
                     name, name_flag = fio_checker(data['Имя доктора'][index])
                     second_surname, second_surname_flag = fio_checker(data['Отчество доктора'][index])
@@ -113,15 +152,15 @@ class MainForm:
                     else:
                         specialisation_flag = False
                     if not specialisation_flag:
-                        self.create_console(f'В строчке {index + 1} cпециализация врача не может быть установлена')
+                        self.create_console(f'В строчке {index} cпециализация врача не может быть установлена')
                     if not experience_flag:
-                        self.create_console(f'В строчке {index + 1} стаж врача не введён неверно')
+                        self.create_console(f'В строчке {index} стаж врача не введён неверно')
                     if not second_surname_flag:
-                        self.create_console(f'В строчке {index + 1} отчество врача введёно неверно')
+                        self.create_console(f'В строчке {index} отчество врача введёно неверно')
                     if not surname_flag:
-                        self.create_console(f'В строчке {index + 1} фамилия врача введёна неверно')
+                        self.create_console(f'В строчке {index} фамилия врача введёна неверно')
                     if not name_flag:
-                        self.create_console(f'В строчке {index + 1} имя врача введёно неверно')
+                        self.create_console(f'В строчке {index} имя врача введёно неверно')
                     if not specialisation_flag or not experience_flag or not second_surname_flag or not surname_flag or not name_flag:
                         break
                     find_equal = False
@@ -137,10 +176,11 @@ class MainForm:
                 doctor_correct_flag = True
 
         else:
-            self.create_console('Количество записей про врачей не может быть однозначно установлено!')
-        if len(data['Фамилия пациента']) == len(data['Имя пациента']) == len(data['Отчество пациента']) == len(data['Отчество пациента']) == len(data['Дата рождения пациента']):
+            self.create_console('Количество записей про врачей \nне может быть однозначно установлено!')
+        data = pd.DataFrame(excel_data, columns=['Имя пациента', 'Отчество пациента', 'Дата рождения пациента', 'Фамилия пациента'])
+        if self.len_no_nan(data['Имя пациента'], data['Отчество пациента'], data['Дата рождения пациента'], data['Фамилия пациента']):
             for index in range(len(data['Фамилия пациента'])):
-                if str(data['Фамилия пациента'][index]) != 'nan':
+                if str(data['Фамилия пациента'][index]) != 'nan' and str(data['Фамилия пациента'][index]) != 'Nan':
                     surname, surname_flag = fio_checker(data['Фамилия пациента'][index])
                     name, name_flag = fio_checker(data['Имя пациента'][index])
                     try:
@@ -154,13 +194,13 @@ class MainForm:
                         bithday_flag = False
                     second_surname, second_surname_flag = fio_checker(data['Отчество пациента'][index])
                     if not second_surname_flag:
-                        self.create_console(f'В строчке {index + 1} отчество пациента введёно неверно')
+                        self.create_console(f'В строчке {index} отчество пациента введёно неверно')
                     if not surname_flag:
-                        self.create_console(f'В строчке {index + 1} фамилия пациента введёна неверно')
+                        self.create_console(f'В строчке {index} фамилия пациента введёна неверно')
                     if not name_flag:
-                        self.create_console(f'В строчке {index + 1} имя пациента введёно неверно')
+                        self.create_console(f'В строчке {index} имя пациента введёно неверно')
                     if not bithday_flag:
-                        self.create_console(f'В строчке {index + 1} дата рождения пациента введёно неверно')
+                        self.create_console(f'В строчке {index} дата рождения пациента введёно неверно')
                     if not bithday_flag or not second_surname_flag or not surname_flag or not name_flag:
                         break
                     find_equal = False
@@ -175,7 +215,7 @@ class MainForm:
                 else:
                     patient_correct_flag = True
         else:
-            self.create_console('Количество записей про пациентов не может быть однозначно установлено!')
+            self.create_console('Количество записей про пациентов \nне может быть однозначно установлено!')
         if patient_correct_flag and doctor_correct_flag:
             self.create_console('Записи из файла успешно добавлены')
             self.doctors.extend(doctors_info)
@@ -190,12 +230,18 @@ class MainForm:
                                                                 command=self.copy_from_file, position=[240, 625],
                                                                 background='#2998E9', width='25', height='3',
                                                                 font="Sedan 12")
+            self.active_elements['copy_to_file_btn'] = create_button(font_color='#ffffff', text="Скопировать в файл",
+                                                                  command=self.copy_to_file, position=[240, 725],
+                                                                  background='#2998E9', width='25', height='3',
+                                                                  font="Sedan 12")
             self.file_flag = True
         else:
             if not flag:
                 self.create_console('Форма работы с файлом удалена')
             self.active_elements['copy_file_btn'].destroy()
+            self.active_elements['copy_to_file_btn'].destroy()
             self.active_elements.pop('copy_file_btn')
+            self.active_elements.pop('copy_to_file_btn')
             self.file_flag = False
 
 

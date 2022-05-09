@@ -128,7 +128,7 @@ class MainForm:
                            'Дата рождения пациента': [patient.birhaday_date for patient in help_patient],
                            })
         df.to_excel('./data.xlsx')
-        self.create_console('Записи в файл успешно добавлены')
+        self.create_console('Записи успешно добавлены в файл')
         self.show_file(flag=True)
 
 
@@ -286,8 +286,8 @@ class MainForm:
         if not self.doctor_auth_active:
             self.create_console('Создана форма добавления доктора')
             self.active_elements['doctor_label'] = create_label(font_color="#0C8EEC", text="Вход для доктора", position=[20, 140], background="#b5effb", font="Sedan 14")
-            self.active_elements['doctor_auth_label'] = create_label(font_color="#0C8EEC", text="Выберите профессию доктора:", position=[200, 140], background="#b5effb", font="Sedan 14")
-            self.active_elements['combo_doctor_auth_prof'] = create_combo_box(width=12, font_color="#000000", position=[500, 140], values=DOCTOR_PROFESSIONS, default=None, callback=self.create_chose_doctor, font="Sedan 14")
+            self.active_elements['doctor_auth_label'] = create_label(font_color="#0C8EEC", text="Выберите специализацию доктора:", position=[185, 140], background="#b5effb", font="Sedan 14")
+            self.active_elements['combo_doctor_auth_prof'] = create_combo_box(width=12, font_color="#000000", position=[510, 140], values=DOCTOR_PROFESSIONS, default=None, callback=self.create_chose_doctor, font="Sedan 14")
             self.active_elements['doctor_auth_label_2'] = create_label(font_color="#0C8EEC", text="Выберите доктора", position=[675, 140], background="#b5effb", font="Sedan 14")
             self.active_elements['combo_doctor_auth_who'] = create_combo_box(width=12, font_color="#000000", position=[875, 140], values=[doctor.get_fio() for doctor in self.now_doctors], default=None, font="Sedan 14")
             self.active_elements['doctor_success'] = create_button(font_color='#ffffff', text="Выполнить", command=self.enter_doctor_menu, position=[1050, 140],  background='#2998E9', width='13', height='1', font="Sedan 12")

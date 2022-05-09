@@ -99,16 +99,16 @@ class AdminForm:
                                                                  height='3', font="Sedan 12")
 
     def find_by_surname(self, text):
-        text = text.get()
+        text = text.get().lower()
         result = 'Поиск по вашему запросу:\n'
         index = 1
         if text != "":
             for doctor in self.MainForm.doctors:
-                if text in doctor.get_full_fio():
+                if text in doctor.get_full_fio().lower():
                     result += str(index) + ") " + doctor.show_info()+ "\n"
                     index += 1
             for patient in self.MainForm.patients:
-                if text in patient.get_full_fio():
+                if text in patient.get_full_fio().lower():
                     result += str(index) + ") " + patient.show_info() + "\n"
                     index += 1
             if result == 'Поиск по вашему запросу:\n':

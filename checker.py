@@ -15,7 +15,7 @@ def no_digit(text):
 
 
 def fio_checker(text):
-    if len(text) > 1 and len(text) < MAXLENNAME:
+    if len(text.replace(' ', '')) > 1 and len(text) < MAXLENNAME:
         flag1 = True
     else:
         flag1 = False

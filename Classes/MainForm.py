@@ -33,7 +33,7 @@ class MainForm:
 
         self.show_main_screen()
         self.create_console()
-
+        self.tries = 0
         self.window.mainloop()
 
     def create_console(self, text=""):
@@ -44,25 +44,22 @@ class MainForm:
         create_label(font_color='#000000',
                      text=CONSOLETEXT, position=[550, 175], font="Sedan 14", background="#30d3f9")
 
-        self.console = tk.Label(
-            text=text,
-            font=f"Sedan 14",
+        self.console = tk.Text(font=f"Sedan 14",
             foreground='#000000',
             background='#ffffff',
             width=70,
-            height=18,
-        )
+            height=18)
+        self.console.insert(tk.END, text)
+
         self.console.place(x=560, y=225)
 
     def create_big_console(self, text=""):
-        self.active_elements['big_console'] = tk.Label(
-            text=text,
-            font="Sedan 14",
+        self.active_elements['big_console'] = tk.Text(font="Sedan 14",
             foreground='#000000',
             background='#ffffff',
             width=110,
-            height=22,
-        )
+            height=22)
+        self.active_elements['big_console'].insert(tk.END, text)
         self.active_elements['big_console'].place(x=150, y=200)
 
     def show_main_screen(self):
@@ -267,10 +264,14 @@ class MainForm:
     def check_correct_admin_password(self):
         flag = check_correct_admin_password(self.active_elements['admin_entry'].get())
         if flag:
+            self.tries = 0
             self.destroy_all()
             AdminForm(self)
         else:
-            self.create_console("Пароль введён неверно")
+            self.tries+=1
+            self.create_console(f"Пароль введён неверно. Осталось попыток {5 - self.tries}")
+            if self.tries == 5:
+                self.window.destroy()
 
     def create_chose_doctor(self, event):
         now_prof = self.active_elements['combo_doctor_auth_prof'].get()
